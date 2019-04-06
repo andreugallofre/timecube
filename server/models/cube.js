@@ -1,16 +1,14 @@
 const mongoose  = require('mongoose');
 const Schema    = mongoose.Schema;
-const user      = mongoose.
 var Cube        = new Schema({
     code: {
         type: int,
         required: true
-    }
+    },
 
     propietari: {
-        postedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+        postedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'USER'},
         required: false,
-        default: 
     }
 })
 
