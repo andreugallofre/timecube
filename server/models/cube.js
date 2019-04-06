@@ -9,7 +9,8 @@ var Cube        = new Schema({
     propietari: {
         type: Schema.Types.ObjectId,
         ref: 'USER',
-        required: false
+        required: false,
+        default: undefined
     },
 
     cares: [{

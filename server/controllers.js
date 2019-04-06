@@ -2,6 +2,10 @@ const User = require('./models/user');
 const boom = require('boom');
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken')
+const _ = require('lodash');
+const Usr = require('./models/user');
+const Cb = require('./models/cube');
+
 class Controllers {
     login(req, res, next) {
         const q = User.findOne({ email: req.body.email });
@@ -50,6 +54,15 @@ class Controllers {
                 })
             })
         });
+    }
+
+    posaTasques(req, res, next) {
+        var novesCares = req.body;
+        
+        var docs = [];
+        _.forEach(novesCares, (o) => {
+            
+        })
     }
 
 }

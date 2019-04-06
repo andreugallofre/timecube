@@ -8,4 +8,10 @@ router.get('/', (req, res) => {res.json({data: 'ok', version: '1.0.0'})})
 router.post('/login', C.login);
 router.post('/register', C.register)
 
+router.post(
+    '/cube/cares',
+    passport.authenticate('jwt', { session: false }),
+    C.posaTasques
+    )
+
 module.exports = router;
