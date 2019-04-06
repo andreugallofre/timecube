@@ -12,6 +12,8 @@ def read_from_port (ser):
                 if rawLigne != "" and rawLigne[0] == '{' :
                     tempeData = json.loads(rawLigne)
                     print(tempeData)
+                    with open('data.txt', 'w') as f:
+                        json.dump(tempeData, f).rstrip('\n')
             except:
                 pass
 
