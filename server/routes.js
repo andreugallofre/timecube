@@ -12,4 +12,10 @@ router.post('/user/register', C.UserRegister)
 
 router.post('/cube/register',passport.authenticate('jwt', {  session: false }),C.CubeRegister);
 
+router.post(
+    '/cube/cares',
+    passport.authenticate('jwt', { session: false }),
+    C.posaTasques
+    )
+
 module.exports = router;

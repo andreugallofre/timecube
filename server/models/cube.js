@@ -7,9 +7,19 @@ var Cube        = new Schema({
     },
 
     propietari: {
-        postedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'USER'},
+        type: Schema.Types.ObjectId,
+        ref: 'USER',
         required: false,
-    }
+        default: undefined
+    },
+
+    cares: [{
+        num: {type: Number, required: true},
+        task: {
+            type: Schema.Types.ObjectId,
+            ref: 'TASK'
+        }
+    }]
 })
 
 var cube = mongoose.model('CUBE', Cube)
