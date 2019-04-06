@@ -13,3 +13,4 @@ var Cube        = new Schema({
 })
 
 var cube = mongoose.model('CUBE', Cube)
+module.exports = cube;

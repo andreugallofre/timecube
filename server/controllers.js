@@ -1,5 +1,6 @@
 const User = require('./models/user');
 const boom = require('boom');
+const bcrypt = require('bcrypt');
 class Controllers {
     login(req, res, next) {
         const q = User.findOne({ email: req.body.email });
@@ -31,12 +32,14 @@ class Controllers {
     }
 
     register(req, res, next) {
+        console.log(req.body);
         bcrypt.hash(req.body.password, 10, (err, hash) => {
             if(err) return next(boom.badImplementation("Error en hashejar pw"));
             var u = new User({
                 email: req.body.email,
                 name: req.body.name,
-                password: hash
+                password: hash,
+                surname: req.body.surname
             });
             u.save((err) => {
                 if(err) return next(boom.badImplementation(err));

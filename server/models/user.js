@@ -15,7 +15,12 @@ const User      = new Schema({
         type: String,
         required: true,
         regexp: "/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/"
+    },
+    password: {
+        type: String,
+        required: true
     }
 })
 
 var user = mongoose.model('USER',User)
+module.exports = user;
