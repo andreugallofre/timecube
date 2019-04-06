@@ -1,0 +1,19 @@
+{
+  "name": "timecube",
+  "version": "1.0.0",
+  "description": "Amazing timecube to organize your issues",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atsuky/timecube.git"
+  },
+  "author": "Claasqui i sanchy xd",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/atsuky/timecube/issues"
+  },
+  "homepage": "https://github.com/atsuky/timecube#readme"
+}
