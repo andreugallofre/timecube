@@ -32,6 +32,20 @@ var strategy = new JwtStrategy(jwtOptions, function(req, jwt_payload, next) {
 });
 passport.use(strategy);
 
+// Connect to database through mongoose
+const dbname = 'davidguapo'
+mongoose.connect('mongodb://localhost:27017/' + dbname);
+mongoose.Promise = global.Promise;
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+// Use passport
+app.use(passport.initialize());
+
+// Parsers for POST data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 // Tots els endpoints de la api a /api
 app.use('api/', routes);
