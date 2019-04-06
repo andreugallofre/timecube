@@ -1,6 +1,7 @@
 const User = require('./models/user');
 const boom = require('boom');
 const bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken')
 class Controllers {
     UserLogin(req, res, next) {
         const q = User.findOne({ email: req.body.email });
