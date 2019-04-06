@@ -2,7 +2,7 @@ const mongoose  = require('mongoose');
 const Schema    = mongoose.Schema;
 var Cube        = new Schema({
     code: {
-        type: int,
+        type: Number,
         required: true
     },
 
