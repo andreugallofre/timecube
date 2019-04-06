@@ -1,0 +1,31 @@
+.login-form {
+    padding-left: 20%;
+    padding-right: 45%;
+    padding-top: 10%;
+}
+
+.login-form-button {
+    width: 100%;
+}
+
+.login-background {
+    background-image: url("../../assets/login_background.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -9999;
+}
+
+.login-title {
+    color: white;
+    font-size: x-large;
+}
+
+.login-button {
+    color: white;
+}
