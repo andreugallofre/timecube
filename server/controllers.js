@@ -144,6 +144,32 @@ class Controllers {
         })
     }
 
+    getTasquesActives(req, res, next) {
+        Cb.findOne({propietari: req.user._id})
+        .populate('cares.task')
+        .select('cares')
+        .exec(function(err, cube) {
+            if (err) return next(boom.badImplementation(err));
+
+            return res.json({error: null, data: cube})
+        })
+    }
+
+    getTasques(req, res, next) {
+        Cb.findOne({ propietari: req.user._id })
+            .exec(function (err, cube) {
+                if (err) return next(boom.badImplementation(err));
+
+                Tk.find({cube: cube._id}, (err, docs) => {
+                    if (err) return next(boom.badImplementation(err));
+                    return res.json({
+                        error: null,
+                        data: docs
+                    })
+                })
+            })
+    }
+
 
 }
 module.exports = Controllers;
