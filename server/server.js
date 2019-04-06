@@ -11,6 +11,8 @@ var passportJWT = require("passport-jwt");
 
 const User = require('./models/user.js');
 
+const boom = require('boom');
+
 
 var ExtractJwt = passportJWT.ExtractJwt;
 var JwtStrategy = passportJWT.Strategy;

@@ -16,7 +16,7 @@ class Controllers {
 
                 bcrypt.compare(req.body.password, usr.password, function (err, ok) {
                     if (ok) {
-                        var token = jwt.sign({name: usr.name}, 'AndreuGuapo', { expiresIn: 1444800 });
+                        var token = jwt.sign({name: usr.name, _id: usr._id}, 'AndreuGuapo', { expiresIn: 1444800 });
 
                         console.log(`Inici de sessió usuari: ${usr.email}`);
                         return res.json({ data: token });
@@ -58,9 +58,9 @@ class Controllers {
     }
 
     CubeRegister(req,res,next) {
-        Cube.findOne({"code":req.body.code}, (err, doc) => {
+        Cb.findOne({"code":req.body.code}, (err, doc) => {
             if (err) return next(boom.badImplentation(err));
-            if (doc.propietari === undefined) {
+            if (doc.propietari === null) {
                 doc.propietari = req.user._id;
                 doc.save(err => {
                     if (err) return next(boom.badImplementation(err));
@@ -83,11 +83,12 @@ class Controllers {
             if (err) return next(boom.badImplementation(err));
             
             var docs = [];
+            cube.cares = [];
             _.forEach(novesCares, (o) => {
                 var t = new Tk({
                     name: o.nomTaska,
                     desc: o.descTaska,
-                    cube: cube
+                    cube: cube._id
                 });
 
                 docs.push(t);
