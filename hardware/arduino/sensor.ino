@@ -1,14 +1,12 @@
 #include "CurieIMU.h"
+#include <ArduinoJson.h>
 int ax, ay, az;         // accelerometer values
 int gx, gy, gz;         // gyrometer values
-
-const int ledPin = 13;      // activity LED pin
-boolean blinkState = false; // state of the LED
 
 int calibrateOffsets = 1; // int to determine whether calibration takes place or not
 
 void setup() {
-  Serial.begin(9600); // initialize Serial communication
+  Serial.begin(19200); // initialize Serial communication
   while (!Serial);    // wait for the serial port to open
 
   // initialize device
@@ -38,15 +36,6 @@ void setup() {
     Serial.print("\t"); // 0
     Serial.println(CurieIMU.getGyroOffset(Z_AXIS));
 
-    // To manually configure offset compensation values,
-    // use the following methods instead of the autoCalibrate...() methods below
-    //CurieIMU.setAccelerometerOffset(X_AXIS,495.3);
-    //CurieIMU.setAccelerometerOffset(Y_AXIS,-15.6);
-    //CurieIMU.setAccelerometerOffset(Z_AXIS,491.4);
-    //CurieIMU.setGyroOffset(X_AXIS,7.869);
-    //CurieIMU.setGyroOffset(Y_AXIS,-0.061);
-    //CurieIMU.setGyroOffset(Z_AXIS,15.494);
-
     Serial.println("About to calibrate. Make sure your board is stable and upright");
     delay(5000);
 
@@ -75,19 +64,11 @@ void setup() {
     Serial.print("\t"); // 0
     Serial.println(CurieIMU.getGyroOffset(Z_AXIS));
   }
-  
-  // configure Arduino LED for activity indicator
-  pinMode(ledPin, OUTPUT);
 }
 
 void loop() {
   // read raw accel/gyro measurements from device
   CurieIMU.readMotionSensor(ax, ay, az, gx, gy, gz);
-
-  // these methods (and a few others) are also available
-
-  //CurieIMU.readAcceleration(ax, ay, az);
-  //(gx, gy, gz);
 
   ax = CurieIMU.readAccelerometer(X_AXIS);
   ay = CurieIMU.readAccelerometer(Y_AXIS);
@@ -96,17 +77,16 @@ void loop() {
   gy = CurieIMU.readGyro(Y_AXIS);
   gz = CurieIMU.readGyro(Z_AXIS);
 
-  // display tab-separated accel/gyro x/y/z values
-  Serial.print("a/g:\t");
-  Serial.print(ax);
-  Serial.print("\t");
-  Serial.print(ay);
-  Serial.print("\t");
-  Serial.print(az);
-  Serial.print("\t");
-  Serial.print(gx);
-  Serial.print("\t");
-  Serial.print(gy);
-  Serial.print("\t");
-  Serial.println(gz);
+  DynamicJsonDocument posinfo(1024);
+
+  posinfo["accel_x"]  = ax;
+  posinfo["accel_y"]  = ay;
+  posinfo["accel_z"]  = az;
+  posinfo["gyro_x"]   = gx;
+  posinfo["gyro_y"]   = gy;
+  posinfo["gyro_z"]   = gz;  
+
+  Serial.println();
+  serializeJson(posinfo, Serial);
+  delay(1000);
 }
