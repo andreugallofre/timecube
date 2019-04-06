@@ -113,6 +113,37 @@ class Controllers {
         })
     }
 
+    assignaTasca(req, res, next) {
+        var { numCara, nomTaska, descTaska } = req.body;
+        console.log(numCara);
+        Cb.findOne({propietari: req.user._id}, function(err, cube) {
+            if(err) return next(boom.badImplementation(err));
+
+            var t = new Tk({
+                name: nomTaska,
+                desc: descTaska,
+                cube: cube._id
+            })
+
+            t.save(err => {
+                if (err) return next(boom.badImplementation(err));
+                Cb.updateOne({_id: cube._id}, {
+                    $set: {
+                        "cares.$[c].task": t._id
+                    }
+                },
+                { arrayFilters: [{"c.num": numCara}] }, 
+                (err) => {
+                    if (err) return next(boom.badImplementation(err));
+                    return res.json({
+                        data: true,
+                        error: null
+                    })
+                })
+            })
+        })
+    }
+
 
 }
 module.exports = Controllers;

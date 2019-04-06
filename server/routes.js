@@ -18,4 +18,10 @@ router.post(
     C.posaTasques
     )
 
+router.put(
+    '/cube/cara',
+    passport.authenticate('jwt', { session: false }),
+    C.assignaTasca
+)
+
 module.exports = router;
