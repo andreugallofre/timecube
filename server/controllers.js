@@ -2,7 +2,7 @@ const User = require('./models/user');
 const boom = require('boom');
 const bcrypt = require('bcrypt');
 class Controllers {
-    login(req, res, next) {
+    UserLogin(req, res, next) {
         const q = User.findOne({ email: req.body.email });
         q.exec(function searchUser(err, usr) {
             if (err) next(boom.badImplementation(err));
@@ -31,7 +31,7 @@ class Controllers {
 
     }
 
-    register(req, res, next) {
+    UserRegister(req, res, next) {
         console.log(req.body);
         bcrypt.hash(req.body.password, 10, (err, hash) => {
             if(err) return next(boom.badImplementation("Error en hashejar pw"));
@@ -51,5 +51,25 @@ class Controllers {
         });
     }
 
+    CubeRegister(req,res,next) {
+        Cube.findOne({"code":req.body.code}, (err, doc) => {
+            if (err) return next(boom.badImplentation(err));
+            if (doc.propietari === undefined) {
+                doc.propietari = req.user._id;
+                doc.save(err => {
+                    if (err) return next(boom.badImplementation(err));
+                    return res.json({
+                        error: null,
+                        data: true
+                    });
+                });
+            }
+            else {
+                return res.json({
+                    error: "Ja està adjudicat"
+                })
+            }
+        });
+    }
 }
 module.exports = Controllers;
