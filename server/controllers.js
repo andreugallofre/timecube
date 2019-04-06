@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken')
 const _ = require('lodash');
 const Usr = require('./models/user');
 const Cb = require('./models/cube');
+const Tk = require('./models/task');
 
 class Controllers {
     UserLogin(req, res, next) {
@@ -78,10 +79,36 @@ class Controllers {
     }
     posaTasques(req, res, next) {
         var novesCares = req.body;
+        Cb.findOne({propietari: req.user._id}, function(err, cube) {
+            if (err) return next(boom.badImplementation(err));
+            
+            var docs = [];
+            _.forEach(novesCares, (o) => {
+                var t = new Tk({
+                    name: o.nomTaska,
+                    desc: o.descTaska,
+                    cube: cube
+                });
 
-        var docs = [];
-        _.forEach(novesCares, (o) => {
+                docs.push(t);
+                cube.cares.push({
+                    num: o.numCara,
+                    task: t
+                });
+                
+            });
 
+            Tk.create(docs, (err) => {
+                if(err) return next(boom.badImplementation(err));
+                cube.save(err => {
+                    if (err) return next(boom.badImplementation(err));
+
+                    return res.json({
+                        data: true,
+                        error: null
+                    });
+                })
+            })
         })
     }
 
