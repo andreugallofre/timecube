@@ -96,5 +96,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Tots els endpoints de la api a /api
 app.use('api/', routes);
+app.use(bodyParser.urlencoded({ extended: true  }))
+
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
