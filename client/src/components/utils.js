@@ -12,9 +12,6 @@ export const CubeIcon = props => (
     <Icon component={CubeSVG} {...props} />
 );
 
-const BASE_URL = "10.105.112.73:8080/api";
-
-
 export const postCreateUser = (name, surname, email, password) => {
     return axios({
         method: 'post',
@@ -42,12 +39,33 @@ export const postGetUser = (email, password) => {
 export const postConfigureCube = (identifier) => {
     return axios({
         method: 'post',
-        url: 'http://10.105.112.73:8080/api//cube/register',
+        url: 'http://10.105.112.73:8080/api/cube/register',
         headers: {'Authorization': "bearer " + localStorage.getItem('token')},
         data: {
             code: identifier
         }
     });
+};
+
+export const putEditCubeFace = (id, title, description) => {
+    return axios({
+        method: 'post',
+        url: 'http://10.105.112.73:8080/api/cube/cara',
+        headers: {'Authorization': "bearer " + localStorage.getItem('token')},
+        data: {
+            nomTaska: title,
+            descTaska: description,
+            numCara: id
+        }
+    });
+};
+
+export const getActiveTasks = () => {
+    return axios({
+        method: 'post',
+        url: 'http://10.105.112.73:8080/api/cube/activeTasks',
+        headers: {'Authorization': "bearer " + localStorage.getItem('token')}
+    })
 };
 
 /* GET, POST i PUT d'una tasca */

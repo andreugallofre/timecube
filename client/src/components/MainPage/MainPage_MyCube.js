@@ -1,24 +1,94 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Icon, List, Modal, Button, Input } from 'antd';
-import { CubeIcon } from "../utils";
-import reqwest from 'reqwest';
+import { Layout, Menu, Icon, List, Modal, Button, Input, Form, InputNumber } from 'antd';
+import { CubeIcon, putEditCubeFace, getActiveTasks} from "../utils";
 
 import './MainPage.css';
 
 const { Sider, Content } = Layout;
-const count = 3;
-const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
+
+const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
+    class extends React.Component {
+        render() {
+            const { visible, onCancel, onCreate, form } = this.props;
+            const { getFieldDecorator } = form;
+            return (
+                <Modal
+                    visible={visible}
+                    title="Create a new collection"
+                    okText="Create"
+                    onCancel={onCancel}
+                    onOk={onCreate} >
+                    <Form layout="vertical">
+                        <Form.Item label="Face Number (1 to 5)">
+                            {getFieldDecorator('id', {
+                                rules: [{ required: true, message: 'Please select a face number' }],
+                                initialValue: 1
+                            })(
+                                <InputNumber min={1} max={5} />
+                            )}
+                        </Form.Item>
+                        <Form.Item label="Title">
+                            {getFieldDecorator('title', {
+                                rules: [{ required: true, message: 'Please input the title of the task!' }],
+                            })(
+                                <Input />
+                            )}
+                        </Form.Item>
+                        <Form.Item label="Description">
+                            {getFieldDecorator('description', {
+                                rules: [{ required: true, message: 'Please input the description for the task!' }],
+                            })(
+                                <Input />
+                            )}
+                        </Form.Item>
+                    </Form>
+                </Modal>
+            );
+        }
+    }
+);
 
 
 class MainPage_MyCube extends Component {
 
     state = {
-        initLoading: true,
-        loading: false,
-        title: "",
-        description: "",
+        visible: false,
         data: [],
         list: []
+    };
+
+    showModal = () => {
+        this.setState({ visible: true });
+    };
+
+    handleCancel = () => {
+        this.setState({ visible: false });
+    };
+
+    handleCreate = () => {
+        const form = this.formRef.props.form;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+
+            console.log('Received values of form: ', values);
+            putEditCubeFace(values.id, values.title, values.description).then((response) => {
+                form.resetFields();
+                this.setState({ visible: false });
+                this.props.history.push("/home/cube");
+            }).catch((error) => {
+                console.log(error);
+                alert("Incorrect data");
+            });
+
+            form.resetFields();
+            this.setState({ visible: false });
+        });
+    };
+
+    saveFormRef = (formRef) => {
+        this.formRef = formRef;
     };
 
     myTasksScreen = () => {
@@ -28,7 +98,6 @@ class MainPage_MyCube extends Component {
     componentDidMount() {
         this.getData((res) => {
             this.setState({
-                initLoading: false,
                 data: res.results,
                 list: res.results,
             });
@@ -36,19 +105,15 @@ class MainPage_MyCube extends Component {
     }
 
     getData = (callback) => {
-        reqwest({
-            url: fakeDataUrl,
-            type: 'json',
-            method: 'get',
-            contentType: 'application/json',
-            success: (res) => {
-                callback(res);
-            },
+        getActiveTasks().then((response) => {
+            callback(response)
+        }).catch((error) => {
+            console.log(error);
         });
     };
 
     render() {
-        const { initLoading, list } = this.state;
+        const { list } = this.state;
 
         return (
             <Layout>
@@ -70,11 +135,13 @@ class MainPage_MyCube extends Component {
                 <Layout style={{ marginLeft: 200 }}>
 
                     <Content className="content">
-                        <Button type="primary" className="configureButton" >Configure all faces</Button>
+                        <div className="configureButton">
+                            <Button type="primary" >Configure all faces</Button>
+                            <Button type="default" onClick={this.showModal}>Change Task</Button>
+                        </div>
                         <h1 className="content-title">Your cube configuration</h1>
                         <List
                             className="demo-loadmore-list"
-                            loading={initLoading}
                             itemLayout="horizontal"
                             dataSource={list}
                             renderItem={item => (
@@ -86,9 +153,14 @@ class MainPage_MyCube extends Component {
                                 </List.Item>
                             )}
                         />
+                        <CollectionCreateForm
+                            wrappedComponentRef={this.saveFormRef}
+                            visible={this.state.visible}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                        />
                     </Content>
                 </Layout>
-
             </Layout>
         );
     }
