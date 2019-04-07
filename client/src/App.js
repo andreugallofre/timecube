@@ -7,6 +7,7 @@ import SetCube from './components/Register/SetCube.js'
 import MainPage_MyCube from './components/MainPage/MainPage_MyCube.js'
 import MainPage_MyTasks from './components/MainPage/MainPage_MyTasks.js'
 import Configuration from './components/MainPage/ConfigureFaces.js'
+import MainPage_Charts from './components/MainPage/MainPage_Charts.js'
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
             <Route path="/home/cube" exact component={ MainPage_MyCube }/>
             <Route path="/home/cube/configuration" exact component={ Configuration }/>
             <Route path="/home/tasks" exact component={ MainPage_MyTasks }/>
+            <Route path="/home/charts" exact component={ MainPage_Charts }/>
           </Switch>
         </BrowserRouter>
     );

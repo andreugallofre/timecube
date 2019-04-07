@@ -103,6 +103,10 @@ export const postConfigureAllFaces = (title1, desc1, title2, desc2, title3, desc
     })
 };
 
-/* GET, POST i PUT d'una tasca */
-
-/* GET periodes (de totes les tasques o d'una tasca en concret (?)) */
+export const getAllTasks = () => {
+    return axios({
+        method: 'get',
+        url:'http://10.105.112.73:8080/api/cube/allTasks',
+        headers: {'Authorization': "bearer " + localStorage.getItem('token')}
+    })
+};

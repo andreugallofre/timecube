@@ -97,6 +97,10 @@ class MainPage_MyCube extends Component {
         this.props.history.push("/home/tasks");
     };
 
+    periodCharts = () => {
+        this.props.history.push("/home/charts");
+    };
+
     cubeConfiguration = () => {
         this.props.history.push("/home/cube/configuration");
     };
@@ -129,11 +133,14 @@ class MainPage_MyCube extends Component {
                         <Menu.Item key="1">
                             <CubeIcon />
                             <span> My Cube </span>
-
                         </Menu.Item>
                         <Menu.Item key="2" onClick={this.myTasksScreen}>
                             <Icon type="bars" />
-                            <span> My Tasks </span>
+                            <span> All my Tasks </span>
+                        </Menu.Item>
+                        <Menu.Item key="3" onClick={this.periodCharts}>
+                            <Icon type="clock-circle" />
+                            <span> All my periods </span>
                         </Menu.Item>
                     </Menu>
                 </Sider>
