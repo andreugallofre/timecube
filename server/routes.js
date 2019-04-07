@@ -47,7 +47,7 @@ router.get(
     passport.authenticate('jwt', { session: false }),
     C.getTasquesAmbPeriodes
 )
-router.post('/cube/canvi', passport.authenticate('jwt', {  session: false }), C.canvi_de_cara);
+router.post('/cube/canvi', C.canvi_de_cara);
 
 
 module.exports = router;

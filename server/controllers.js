@@ -185,7 +185,7 @@ class Controllers {
                 },
                 {
                     $lookup: {
-                        from: 'periodes',
+                        from: 'periods',
                         localField: '_id',
                         foreignField: 'task',
                         as: "periodes"
@@ -214,7 +214,7 @@ class Controllers {
                     },
                     {
                         $lookup: {
-                            from: 'periodes',
+                            from: 'periods',
                             localField: '_id',
                             foreignField: 'task',
                             as: "periodes"
@@ -238,40 +238,51 @@ class Controllers {
           var anterior  = req.body.anterior;
           var actual    = req.body.actual;
 
+            console.log("NOVA REQUEST CANVI");
+          console.log(req.body);
 
-          Cb.findOne({ code: req.body.code}, (err,doc) => {
+          Cb.findOne({ code: req.body.code}, (err,cube) => {
             if (err) return next(boom.badImplementation(err));
 
             if (!req.body.anterior) {
-              let id_task_act = _.find(doc.cares, { 'num': actual }).task;
+              let id_task_act = _.find(cube.cares, { 'num': actual });
+              console.log(id_task_act);
                 var p = new P({
                   "inici": Date.now(),
                   "acabada": false,
-                  "task": id_task_act
+                  "task": id_task_act.task
                 });
                 p.save(err => {
-                  return next(boom.badImplementation(err));
+                  if (err) return next(boom.badImplementation(err));
+                  return res.json({
+                      data: true,
+                      error: ""
+                  })
                 });
             } else {
                 //ACABAR
-                let id_task_ant = _.find(doc.cares, { 'num': anterior }).task;
-                P.findOne({ task: id_task, acabada: false }, (err,doc) => {
+                let id_task_ant = _.find(cube.cares, { 'num': anterior }).task;
+                P.findOne({ task: id_task_ant, acabada: false }, (err,doc) => {
                 if (doc) {
                     doc.acabada = true;
                     doc.fi = Date.now();
                 }
-                else return { "rip": true }
+                else return  next(boom.badRequest("No hi ha periode anterior"))
                 doc.save(err => {
                     if (err) return next(boom.badImplementation(err));
                     //NOVA
-                    let id_task_act = _.find(doc.cares, { 'num': actual }).task;
+                    let id_task_act = _.find(cube.cares, { 'num': actual }).task;
                     var p = new P({
                     "inici": Date.now(),
                     "acabada": false,
                     "task": id_task_act
                     });
                     p.save(err => {
-                    return next(boom.badImplementation(err));
+                        if (err) return next(boom.badImplementation(err));
+                        return res.json({
+                            data: true,
+                            error: ""
+                        })
                     });
                 });
                 });
