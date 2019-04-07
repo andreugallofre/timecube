@@ -12,13 +12,11 @@ var Task = new Schema({
         ref: 'CUBE',
         required: true
     }
-
 });
 
 Task.statics.task_time = (task_id, cb) => {
     console.log(task_id);
     cp.find({ "task":task_id }, (err,docs) => {
-        if(err) cb(err);
 
         temps = 0;
         for (doc of docs) {
@@ -29,9 +27,8 @@ Task.statics.task_time = (task_id, cb) => {
 
           temps += d.seconds();
         }
-        cb(null, temps);
+        cb(null, d);
     });
-
 };
 
 
