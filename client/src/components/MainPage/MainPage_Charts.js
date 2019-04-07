@@ -39,7 +39,7 @@ class MainPage_Charts extends Component {
         let dataInfo = [{}];
         getAllPeriodes().then((response) => {
             dataInfo= response.data.data;
-            console.log(dataInfo)
+            console.log(dataInfo);
             dataSource = [{ }];
 
             for (let i = 0; i < dataInfo.length; ++i) {
@@ -50,13 +50,13 @@ class MainPage_Charts extends Component {
                             title: dataInfo[i].name,
                             startTime: dataInfo[i].periodes[j].inici,
                             endTime: dataInfo[i].periodes[j].fi
-                        }
+                        };
                         dataSource.push(newline);
-                    };
+                    }
                 }
             }
-            dataSource.shift()
-            this.render()
+            dataSource.shift();
+            this.render();
             return dataSource
 
         }).catch((error) => {
