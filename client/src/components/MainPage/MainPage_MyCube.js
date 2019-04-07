@@ -1,10 +1,26 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon, List, Modal, Button, Input, Form, InputNumber } from 'antd';
-import { CubeIcon, putEditCubeFace, getActiveTasks} from "../utils";
+import {CubeIcon, putEditCubeFace, getActiveTasks, getAllPeriodes} from "../utils";
 
 import './MainPage.css';
 
 const { Sider, Content } = Layout;
+
+let dataSource = [{}];
+
+const columns = [{
+    title: 'Face number',
+    dataIndex: 'faceNumber',
+    key: 'faceNumber',
+}, {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+}, {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description',
+}];
 
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
     class extends React.Component {
@@ -48,15 +64,10 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
     }
 );
 
-
-
 class MainPage_MyCube extends Component {
 
     state = {
         visible: false,
-        visible2: false,
-        data: [],
-        list: []
     };
 
     showModal = () => {
@@ -106,17 +117,29 @@ class MainPage_MyCube extends Component {
     };
 
     componentDidMount() {
-        this.getData((res) => {
-            this.setState({
-                data: res.results,
-                list: res.results,
-            });
-        });
+        this.getData();
     }
 
-    getData = (callback) => {
+
+    getData = () => {
+        let dataInfo = [{}];
         getActiveTasks().then((response) => {
-            callback(response)
+            dataInfo= response.data.data;
+            console.log(dataInfo);
+            dataSource = [{ }];
+
+            for (let i = 0; i < dataInfo.cares.length; ++i) {
+                let newline =  {
+                    faceNumber: dataInfo.cares[i].id,
+                    name: dataInfo.cares[i].task.name,
+                    description: dataInfo.cares[i].task.desc
+                };
+                dataSource.push(newline);
+            }
+            dataSource.shift();
+            this.render();
+            return dataSource;
+
         }).catch((error) => {
             console.log(error);
         });

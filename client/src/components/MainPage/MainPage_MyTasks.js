@@ -5,6 +5,8 @@ import './MainPage.css';
 
 const { Sider, Content } = Layout;
 
+let dataSource = [{ }];
+
 const columns = [{
     title: 'Title',
     dataIndex: 'title',
@@ -22,10 +24,6 @@ const columns = [{
 
 class MainPage_MyCube extends Component {
 
-    state = {
-        dataSource: [{}]
-    };
-
     myCubeScreen = () => {
         this.props.history.push("/home/cube");
     };
@@ -39,6 +37,7 @@ class MainPage_MyCube extends Component {
     }
 
     getData = () => {
+        dataSource = [{}];
         let dataInfo = [{}];
         getAllTasks().then((response) => {
             dataInfo= response.data.data;
@@ -50,11 +49,11 @@ class MainPage_MyCube extends Component {
                     description: dataInfo[i].desc,
                     suma: dataInfo[i].suma,
                 };
-                this.state.dataSource.push(newline);
+                dataSource.push(newline);
             }
-            this.state.dataSource.shift();
+            dataSource.shift();
             this.render();
-            return this.state.dataSource;
+            return dataSource;
 
         }).catch((error) => {
             console.log(error);
