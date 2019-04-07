@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Button } from 'antd';
+import { postConfigureCube } from '../utils.js';
 import {CubeIcon} from "../utils";
 import './Register.css'
 
@@ -10,6 +11,7 @@ class SetCubeForm extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                postConfigureCube()
                 this.props.history.push("/home/cube");
             }
         });

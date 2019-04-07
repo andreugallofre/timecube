@@ -14,8 +14,8 @@ export const CubeIcon = props => (
 
 const BASE_URL = "10.105.112.73:8080/api";
 
-export const postCreateUser = (name, surname, email, password) => {
 
+export const postCreateUser = (name, surname, email, password) => {
     return axios({
         method: 'post',
         url: 'http://10.105.112.73:8080/api/user/register',
@@ -39,8 +39,15 @@ export const postGetUser = (email, password) => {
     });
 };
 
-export const postConfigureCube = (values) => {
-    return axios.post(BASE_URL + '/cube/register', {values})
+export const postConfigureCube = (identifier) => {
+    return axios({
+        method: 'post',
+        url: 'http://10.105.112.73:8080/api//cube/register',
+        headers: {'Authorization': "bearer " + localStorage.getItem('token')},
+        data: {
+            code: identifier
+        }
+    });
 };
 
 /* GET, POST i PUT d'una tasca */

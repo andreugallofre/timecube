@@ -10,6 +10,7 @@ class LoginForm extends Component {
             if (!err) {
                 console.log('Received values of form: ', values);
                 postGetUser(values.email, values.password).then((response) => {
+                    localStorage.set('token', response.data);
                     this.props.history.push("/home/cube");
                 }).catch((error) => {
                     console.log(error);
