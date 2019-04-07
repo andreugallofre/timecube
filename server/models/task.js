@@ -12,17 +12,17 @@ var Task = new Schema({
         ref: 'CUBE',
         required: true
     }
-    
+
 });
 
 Task.methods.task_time = (task_id, cb) => {
     cp.find({ "task":task_id }, (err,docs) => {
         temps = 0;
         for (doc in docs) {
-            temps += int(moment.utc(moment(doc.inici).diff(moment(doc.fi))).asMinutes());     
+            temps += int(moment.utc(moment(doc.inici).diff(moment(doc.fi))).asMinutes());
         }
     });
-   return {"temps":temps}; 
+   return {"temps":temps};
 };
 
 var task = mongoose.model('TASK', Task)

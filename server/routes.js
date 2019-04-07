@@ -18,4 +18,7 @@ router.post(
     C.posaTasques
     )
 
+router.post('/cube/canvi', passport.authenticate('jwt', {  session: false }), C.canvi_de_cara);
+
+
 module.exports = router;

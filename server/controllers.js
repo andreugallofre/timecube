@@ -6,6 +6,7 @@ const _ = require('lodash');
 const Usr = require('./models/user');
 const Cb = require('./models/cube');
 const Tk = require('./models/task');
+const P  = require('./models/period')
 
 class Controllers {
     UserLogin(req, res, next) {
@@ -111,8 +112,40 @@ class Controllers {
                 });
             });
         });
-    }
+      }
 
+        // buscar task amb mateixa cara i inacabada
+        // else, crear tasca
+        canvi_de_cara(req, res, next) {
+          var anterior  = req.body.anterior;
+          var actual    = req.body.actual;
 
+          Cb.findOne({ code: req.body.code}, (err,doc) => {
+            if (err) return next(boom.badImplementation(err));
+
+            //ACABAR
+            let id_task_ant = _.find(doc.cares, { 'num': anterior }).task;
+            P.findOne({ task: id_task, acabada: false }, (err,doc) => {
+              if (doc) {
+                doc.acabada = true;
+                doc.fi = Date.now();
+              }
+              else return { "rip": true }
+              doc.save(err => {
+                if (err) return next(boom.badImplementation(err));
+                //NOVA
+                let id_task_act = _.find(doc.cares, { 'num': actual }).task;
+                var p = new P({
+                  "inici": Date.now(),
+                  "acabada": false,
+                  "task": id_task_act
+                });
+                p.save(err => {
+                  return next(boom.badImplementation(err));
+                });
+              });
+            });
+          });
+        }
 }
 module.exports = Controllers;
