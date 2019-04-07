@@ -23,7 +23,7 @@ class RegisterForm extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                postCreateUser(values.name, values.email, values.password).then((response) => {
+                postCreateUser(values.name, values.email, values.password, values.surname).then((response) => {
                     this.props.history.push("/register/newcube");
                 }).catch((error) => {
                     console.log(error);
@@ -72,6 +72,13 @@ class RegisterForm extends Component {
                         rules: [{ required: true, message: 'Please input your name!', whitespace: true }],
                     })(
                         <Input prefix={<Icon type="user" />} placeholder="Name"  />
+                    )}
+                </Form.Item>
+                <Form.Item hasFeedback >
+                    {getFieldDecorator('surname', {
+                        rules: [{ required: true, message: 'Please input your surname!', whitespace: true }],
+                    })(
+                        <Input prefix={<Icon type="user" />} placeholder="Surname"  />
                     )}
                 </Form.Item>
                 <Form.Item hasFeedback>

@@ -13,28 +13,12 @@ const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender
 class MainPage_MyCube extends Component {
 
     state = {
-        visibleModal: false,
         initLoading: true,
         loading: false,
         title: "",
         description: "",
         data: [],
         list: []
-    };
-
-    showModal = () => {
-        this.setState({ visibleModal: true });
-    };
-
-    handleOk = () => {
-
-        console.log("Title: " + this.state.title + ", Description: " + this.state.description);
-
-        this.setState({ visibleModal: false, title: "", description: "" });
-    };
-
-    handleCancel = () => {
-        this.setState({ visibleModal: false });
     };
 
     myTasksScreen = () => {
@@ -64,7 +48,7 @@ class MainPage_MyCube extends Component {
     };
 
     render() {
-        const { initLoading, list, visibleModal} = this.state;
+        const { initLoading, list } = this.state;
 
         return (
             <Layout>

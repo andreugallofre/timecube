@@ -14,13 +14,14 @@ export const CubeIcon = props => (
 
 const BASE_URL = "10.105.112.73:8080/api";
 
-export const postCreateUser = (name, email, password) => {
+export const postCreateUser = (name, surname, email, password) => {
 
     return axios({
         method: 'post',
         url: 'http://10.105.112.73:8080/api/user/register',
         data: {
             name: name,
+            surname: surname,
             email: email,
             password: password
         }
