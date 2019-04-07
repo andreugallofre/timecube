@@ -18,4 +18,34 @@ router.post(
     C.posaTasques
     )
 
+router.put(
+    '/cube/cara',
+    passport.authenticate('jwt', { session: false }),
+    C.assignaTasca
+)
+
+router.get(
+    '/cube/activeTasks',
+    passport.authenticate('jwt', { session: false }),
+    C.getTasquesActives
+)
+
+router.get(
+    '/cube/allTasks',
+    passport.authenticate('jwt', { session: false }),
+    C.getTasques
+)
+
+router.get(
+    '/cube/activeTasksPeriods',
+    passport.authenticate('jwt', { session: false }),
+    C.getTasquesActivesAmbPeriodes
+)
+
+router.get(
+    '/cube/allTasksPeriods',
+    passport.authenticate('jwt', { session: false }),
+    C.getTasquesAmbPeriodes
+)
+
 module.exports = router;

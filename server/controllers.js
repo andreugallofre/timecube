@@ -113,6 +113,123 @@ class Controllers {
         })
     }
 
+    assignaTasca(req, res, next) {
+        var { numCara, nomTaska, descTaska } = req.body;
+        console.log(numCara);
+        Cb.findOne({propietari: req.user._id}, function(err, cube) {
+            if(err) return next(boom.badImplementation(err));
+
+            var t = new Tk({
+                name: nomTaska,
+                desc: descTaska,
+                cube: cube._id
+            })
+
+            t.save(err => {
+                if (err) return next(boom.badImplementation(err));
+                Cb.updateOne({_id: cube._id}, {
+                    $set: {
+                        "cares.$[c].task": t._id
+                    }
+                },
+                { arrayFilters: [{"c.num": numCara}] }, 
+                (err) => {
+                    if (err) return next(boom.badImplementation(err));
+                    return res.json({
+                        data: true,
+                        error: null
+                    })
+                })
+            })
+        })
+    }
+
+    getTasquesActives(req, res, next) {
+        Cb.findOne({propietari: req.user._id})
+        .populate('cares.task')
+        .select('cares')
+        .exec(function(err, cube) {
+            if (err) return next(boom.badImplementation(err));
+
+            return res.json({error: null, data: cube})
+        })
+    }
+
+    getTasques(req, res, next) {
+        Cb.findOne({ propietari: req.user._id })
+            .exec(function (err, cube) {
+                if (err) return next(boom.badImplementation(err));
+
+                Tk.find({cube: cube._id}, (err, docs) => {
+                    if (err) return next(boom.badImplementation(err));
+                    return res.json({
+                        error: null,
+                        data: docs
+                    })
+                })
+            })
+    }
+
+    getTasquesActivesAmbPeriodes(req, res, next) {
+        Cb.findOne({ propietari: req.user._id })
+        .exec((err, c) => {
+            if (err) return next(boom.badImplementation(err));
+            var ids = _.map(c.cares, "task");
+
+            Tk.aggregate([
+                {
+                    $match: {
+                        _id: {$in: ids}
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'periodes',
+                        localField: '_id',
+                        foreignField: 'task',
+                        as: "periodes"
+                    }
+                }
+            ])
+            .exec((err, docs) => {
+                if (err) return next(boom.badImplementation(err));
+                return res.json({
+                    error: false,
+                    data: docs
+                })
+            })
+        })
+    }
+
+    getTasquesAmbPeriodes(req, res, next) {
+        Cb.findOne({ propietari: req.user._id })
+            .exec((err, c) => {
+                if (err) return next(boom.badImplementation(err));
+                Tk.aggregate([
+                    {
+                        $match: {
+                            cube: c._id
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'periodes',
+                            localField: '_id',
+                            foreignField: 'task',
+                            as: "periodes"
+                        }
+                    }
+                ])
+                    .exec((err, docs) => {
+                        if (err) return next(boom.badImplementation(err));
+                        return res.json({
+                            error: false,
+                            data: docs
+                        })
+                    })
+            })
+    }
+
 
 }
 module.exports = Controllers;
