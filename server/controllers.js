@@ -50,9 +50,12 @@ class Controllers {
             });
             u.save((err) => {
                 if(err) return next(boom.badImplementation(err));
+
+                // We send token too because we need automatic login
+                var token = jwt.sign({ name: u.name, _id: u._id }, 'AndreuGuapo', { expiresIn: 1444800 });
                 return res.json({
                     error: null,
-                    data: true
+                    data: token
                 })
             })
         });
