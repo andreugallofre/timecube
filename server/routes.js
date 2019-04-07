@@ -48,6 +48,7 @@ router.get(
     C.getTasquesAmbPeriodes
 )
 router.post('/cube/canvi', C.canvi_de_cara);
+router.post('/cube/hora',C.tieeempo);
 
 
 module.exports = router;
