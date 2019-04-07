@@ -244,8 +244,10 @@ class Controllers {
           Cb.findOne({ code: req.body.code}, (err,cube) => {
             if (err) return next(boom.badImplementation(err));
 
-            if (!req.body.anterior) {
+            if (!req.body.anterior || req.body.anterior == 0) {
+                if (actual == 0) return res.json({data: true});
               let id_task_act = _.find(cube.cares, { 'num': actual });
+              
               console.log(id_task_act);
                 var p = new P({
                   "inici": Date.now(),
@@ -271,19 +273,23 @@ class Controllers {
                 doc.save(err => {
                     if (err) return next(boom.badImplementation(err));
                     //NOVA
-                    let id_task_act = _.find(cube.cares, { 'num': actual }).task;
-                    var p = new P({
-                    "inici": Date.now(),
-                    "acabada": false,
-                    "task": id_task_act
-                    });
-                    p.save(err => {
-                        if (err) return next(boom.badImplementation(err));
-                        return res.json({
-                            data: true,
-                            error: ""
-                        })
-                    });
+                    if(actual == 0) {
+                        return res.json({ data: true });
+                    } else {
+                        let id_task_act = _.find(cube.cares, { 'num': actual }).task;
+                        var p = new P({
+                        "inici": Date.now(),
+                        "acabada": false,
+                        "task": id_task_act
+                        });
+                        p.save(err => {
+                            if (err) return next(boom.badImplementation(err));
+                            return res.json({
+                                data: true,
+                                error: ""
+                            })
+                        });
+                    }
                 });
                 });
             }
