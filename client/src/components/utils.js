@@ -29,7 +29,14 @@ export const postCreateUser = (name, surname, email, password) => {
 };
 
 export const postGetUser = (email, password) => {
-    return axios.post(BASE_URL + 'user/login', {email: email, password: password});
+    return axios({
+        method: 'post',
+        url: 'http://10.105.112.73:8080/api/user/login',
+        data: {
+            email: email,
+            password: password
+        }
+    });
 };
 
 export const postConfigureCube = (values) => {
