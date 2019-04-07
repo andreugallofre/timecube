@@ -21,21 +21,20 @@ Task.statics.task_time = (task_id, cb) => {
         if(err) cb(err);
 
         temps = 0;
-        console.log(docs);
-        for (doc in docs) {
-            console.log(doc.inici, doc.fi);
+        for (doc of docs) {
             var i = moment(doc.inici)
             var f = moment(doc.fi)
-            console.log(i, f);
-            var d = f.diff(i, 'milliseconds', true);
-            console.log(d);
+            var d = moment.duration(f.diff(i));
+            // console.log(d.seconds());
 
-          //temps += mom.utc(mom(doc.inici).diff(mom(doc.fi))).asSeconds();
+          temps += d.seconds();
         }
         cb(null, temps);
     });
 
 };
+
+
 
 var task = mongoose.model('TASK', Task)
 module.exports = task;

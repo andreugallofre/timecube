@@ -50,5 +50,17 @@ router.get(
 router.post('/cube/canvi', C.canvi_de_cara);
 router.post('/cube/hora',C.tieeempo);
 
+router.get(
+    '/cube/activeTasksPeriodsSuma',
+    passport.authenticate('jwt', { session: false }),
+    C.getTasquesActivesAmbPeriodesSuma
+)
+
+router.get(
+    '/cube/allTasksPeriodsSuma',
+    passport.authenticate('jwt', { session: false }),
+    C.getTasquesAmbPeriodesSuma
+)
+
 
 module.exports = router;
