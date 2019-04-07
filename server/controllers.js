@@ -133,7 +133,7 @@ class Controllers {
                         "cares.$[c].task": t._id
                     }
                 },
-                { arrayFilters: [{"c.num": numCara}] }, 
+                { arrayFilters: [{"c.num": numCara}] },
                 (err) => {
                     if (err) return next(boom.badImplementation(err));
                     return res.json({
@@ -287,6 +287,21 @@ class Controllers {
                 });
                 });
             }
+          });
+        }
+
+        tieeempo(req, res, next) {
+          var idxdxd = req.body.id;
+          Tk.task_time(idxdxd, (err, result) => {
+            if (err)
+              return next(boom.badImplementation(err));
+            return res.json({
+              "data": {
+                "gora": "eta",
+                "terra": "lliure",
+                "temps": result
+              }
+            });
           });
         }
 }

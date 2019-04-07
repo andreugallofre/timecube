@@ -15,14 +15,17 @@ var Task = new Schema({
 
 });
 
-Task.methods.task_time = (task_id, cb) => {
+Task.statics.task_time = (task_id, cb) => {
     cp.find({ "task":task_id }, (err,docs) => {
         temps = 0;
         for (doc in docs) {
-            temps += int(moment.utc(moment(doc.inici).diff(moment(doc.fi))).asMinutes());
+          console.log(doc.inici)
+          console.log(doc.fi)
+            temps += int(moment.utc(moment(doc.inici).diff(moment(doc.fi))).asSeconds());
         }
+        cb(null, temps);
     });
-   return {"temps":temps};
+
 };
 
 var task = mongoose.model('TASK', Task)
