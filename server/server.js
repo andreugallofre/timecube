@@ -48,10 +48,16 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 // Use passport
 app.use(passport.initialize());
 
+
 // Parsers for POST data
 app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  console.log("::REQUEST::");
+  console.log(req.method, req.body, req.url);
+  next();
+})
 
 // Tots els endpoints de la api a /api
 app.use('/api/', routes);
