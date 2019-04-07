@@ -12,6 +12,7 @@ class SetCubeForm extends Component {
             if (!err) {
                 console.log('Received values of form: ', values.name);
                 postConfigureCube(values.name).then((response) => {
+                    console.log(response.data);
                     this.props.history.push("/home/cube");
                 }).catch((error) => {
                     console.log(error);

@@ -42,7 +42,7 @@ export const postGetUser = (email, password) => {
 export const postConfigureCube = (identifier) => {
     return axios({
         method: 'post',
-        url: 'http://10.105.112.73:8080/api//cube/register',
+        url: 'http://10.105.112.73:8080/api/cube/register',
         headers: {'Authorization': "bearer " + localStorage.getItem('token')},
         data: {
             code: identifier
