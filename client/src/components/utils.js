@@ -49,7 +49,7 @@ export const postConfigureCube = (identifier) => {
 
 export const putEditCubeFace = (id, title, description) => {
     return axios({
-        method: 'post',
+        method: 'put',
         url: 'http://10.105.112.73:8080/api/cube/cara',
         headers: {'Authorization': "bearer " + localStorage.getItem('token')},
         data: {
@@ -62,9 +62,44 @@ export const putEditCubeFace = (id, title, description) => {
 
 export const getActiveTasks = () => {
     return axios({
-        method: 'post',
+        method: 'get',
         url: 'http://10.105.112.73:8080/api/cube/activeTasks',
         headers: {'Authorization': "bearer " + localStorage.getItem('token')}
+    })
+};
+
+export const postConfigureAllFaces = (title1, desc1, title2, desc2, title3, desc3, title4, desc4, title5, desc5) => {
+    return axios({
+        method: 'post',
+        url:'http://10.105.112.73:8080/api/cube/cares',
+        headers: {'Authorization': "bearer " + localStorage.getItem('token')},
+        data: [
+            {
+                nomTaska: title1,
+                descTaska: desc1,
+                numCara: "1"
+            },
+            {
+                nomTaska: title2,
+                descTaska: desc2,
+                numCara: "2"
+            },
+            {
+                nomTaska: title3,
+                descTaska: desc3,
+                numCara: "3"
+            },
+            {
+                nomTaska: title4,
+                descTaska: desc4,
+                numCara: "4"
+            },
+            {
+                nomTaska: title5,
+                descTaska: desc5,
+                numCara: "5"
+            }
+        ]
     })
 };
 
