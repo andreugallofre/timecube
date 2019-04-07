@@ -10,9 +10,14 @@ class SetCubeForm extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-                postConfigureCube()
-                this.props.history.push("/home/cube");
+                console.log('Received values of form: ', values.name);
+                postConfigureCube(values.name).then((response) => {
+                    this.props.history.push("/home/cube");
+                }).catch((error) => {
+                    console.log(error);
+                    this.props.history.push("/register/newcube");
+                    alert("Username or password incorrect");
+                });
             }
         });
     };

@@ -24,6 +24,7 @@ class RegisterForm extends Component {
             if (!err) {
                 console.log('Received values of form: ', values);
                 postCreateUser(values.name, values.email, values.password, values.surname).then((response) => {
+                    localStorage.set('token', response.data);
                     this.props.history.push("/register/newcube");
                 }).catch((error) => {
                     console.log(error);
