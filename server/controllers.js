@@ -64,6 +64,8 @@ class Controllers {
     CubeRegister(req,res,next) {
         Cb.findOne({"code":req.body.code}, (err, doc) => {
             if (err) return next(boom.badImplentation(err));
+            console.log(doc);
+            if (doc === null) return next(boom.badRequest("No existeix el cub"));
             if (doc.propietari === null) {
                 doc.propietari = req.user._id;
                 doc.save(err => {

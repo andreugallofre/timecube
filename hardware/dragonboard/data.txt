@@ -1,0 +1,1 @@
+{"accel_z": 16074, "accel_x": 502, "accel_y": 1690, "gyro_z": 4894, "gyro_x": -796, "gyro_y": 340}

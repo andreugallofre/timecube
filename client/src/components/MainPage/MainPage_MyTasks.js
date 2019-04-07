@@ -5,7 +5,7 @@ import './MainPage.css';
 
 const { Sider, Content } = Layout;
 
-const dataSource = [{ }];
+let dataSource = [{ }];
 
 const columns = [{
     title: 'Title',
@@ -16,9 +16,9 @@ const columns = [{
     dataIndex: 'description',
     key: 'description',
 }, {
-    title: 'Estimated time',
-    dataIndex: 'estimatedTime',
-    key: 'estimatedTime',
+    title: 'Suma (seconds)',
+    dataIndex: 'suma',
+    key: 'suma',
 }];
 
 
@@ -37,21 +37,27 @@ class MainPage_MyCube extends Component {
     }
 
     getData = () => {
+        dataSource = [{}];
         let dataInfo = [{}];
         getAllTasks().then((response) => {
             dataInfo= response.data.data;
+            console.log(dataInfo)
+
+            for (let i = 0; i < dataInfo.length; ++i) {
+                let newline = {
+                    title: dataInfo[i].name,
+                    description: dataInfo[i].desc,
+                    suma: dataInfo[i].suma,
+                };
+                dataSource.push(newline);
+            }
+            dataSource.shift()
+            this.render()
+            return dataSource
+
         }).catch((error) => {
             console.log(error);
         });
-
-        for (let i = 0; i < dataInfo.length; ++i) {
-            let newline = {
-                title: dataInfo[i].title,
-                description: dataInfo[i].description,
-                estimatedTime: dataInfo[i].estimatedTime
-            };
-            dataSource.push(newline);
-        }
     };
 
     render() {

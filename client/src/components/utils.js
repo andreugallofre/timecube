@@ -64,7 +64,7 @@ export const getActiveTasks = () => {
     return axios({
         method: 'get',
         url: 'http://10.105.112.73:8080/api/cube/activeTasks',
-        headers: {'Authorization': "bearer " + localStorage.getItem('token')}
+        headers: {'Authorization': "Bearer " + localStorage.getItem('token')}
     })
 };
 
@@ -106,7 +106,15 @@ export const postConfigureAllFaces = (title1, desc1, title2, desc2, title3, desc
 export const getAllTasks = () => {
     return axios({
         method: 'get',
-        url:'http://10.105.112.73:8080/api/cube/allTasks',
+        url:'http://10.105.112.73:8080/api/cube/allTasksPeriodsSuma',
+        headers: {'Authorization': "bearer " + localStorage.getItem('token')}
+    })
+};
+
+export const getAllPeriodes = () => {
+    return axios({
+        method: 'get',
+        url:'http://10.105.112.73:8080/api/cube/allTasksPeriods',
         headers: {'Authorization': "bearer " + localStorage.getItem('token')}
     })
 };

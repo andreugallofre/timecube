@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon, Table } from 'antd';
-import {CubeIcon, getAllTasks} from "../utils";
+import {CubeIcon, getAllPeriodes} from "../utils";
 import './MainPage.css';
 
 const { Sider, Content } = Layout;
 
-const dataSource = [{ }];
+let dataSource = [{ }];
 
 const columns = [{
     title: 'Title',
@@ -19,10 +19,6 @@ const columns = [{
     title: 'End time',
     dataIndex: 'endTime',
     key: 'endTime',
-}, {
-    title: 'Estimated time',
-    dataIndex: 'estimatedTime',
-    key: 'estimatedTime',
 }];
 
 class MainPage_Charts extends Component {
@@ -41,21 +37,32 @@ class MainPage_Charts extends Component {
 
     getData = () => {
         let dataInfo = [{}];
-        getAllTasks().then((response) => {
+        getAllPeriodes().then((response) => {
             dataInfo= response.data.data;
+            console.log(dataInfo)
+            dataSource = [{ }];
+
+            for (let i = 0; i < dataInfo.length; ++i) {
+
+                if (dataInfo[i].periodes.length > 0) {
+                    for (let j = 0; j < dataInfo[i].periodes.length; ++j) {
+                        let newline = {
+                            title: dataInfo[i].name,
+                            startTime: dataInfo[i].periodes[j].inici,
+                            endTime: dataInfo[i].periodes[j].fi
+                        }
+                        dataSource.push(newline);
+                    };
+                }
+            }
+            dataSource.shift()
+            this.render()
+            return dataSource
+
         }).catch((error) => {
             console.log(error);
         });
 
-        for (let i = 0; i < dataInfo.length; ++i) {
-            let newline = {
-                title: dataInfo[i].title,
-                startTime: dataInfo[i].startTime,
-                endTime: dataInfo[i].endTime,
-                estimatedTime: dataInfo[i].estimatedTime
-            };
-            dataSource.push(newline);
-        }
     };
 
     render() {
