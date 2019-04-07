@@ -75,9 +75,7 @@ class Controllers {
                 });
             }
             else {
-                return res.json({
-                    error: "Ja està adjudicat"
-                })
+                return next(boom.badRequest("Ja té propietari"));
             }
         });
     }
