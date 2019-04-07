@@ -25,7 +25,6 @@ Task.statics.task_time = (task_id, cb) => {
         }
         cb(null, temps);
     });
-
 };
 
 var task = mongoose.model('TASK', Task)

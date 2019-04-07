@@ -247,7 +247,7 @@ class Controllers {
             if (!req.body.anterior || req.body.anterior == 0) {
                 if (actual == 0) return res.json({data: true});
               let id_task_act = _.find(cube.cares, { 'num': actual });
-              
+
               console.log(id_task_act);
                 var p = new P({
                   "inici": Date.now(),
