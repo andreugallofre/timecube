@@ -7,6 +7,7 @@ const Usr = require('./models/user');
 const Cb = require('./models/cube');
 const Tk = require('./models/task');
 const P  = require('./models/period')
+const moment = require('moment');
 
 class Controllers {
     UserLogin(req, res, next) {
@@ -313,5 +314,95 @@ class Controllers {
             });
           });
         }
+
+
+    getTasquesActivesAmbPeriodesSuma(req, res, next) {
+        Cb.findOne({ propietari: req.user._id })
+            .exec((err, c) => {
+                if (err) return next(boom.badImplementation(err));
+                var ids = _.map(c.cares, "task");
+
+                Tk.aggregate([
+                    {
+                        $match: {
+                            _id: { $in: ids }
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'periods',
+                            localField: '_id',
+                            foreignField: 'task',
+                            as: "periodes"
+                        }
+                    }
+                ])
+                    .exec((err, docs) => {
+                        if (err) return next(boom.badImplementation(err));
+                        for (let t of docs) {
+                            var temps = 0;
+                            for (let p of t.periodes) {
+                                var i = moment(p.inici)
+                                var f = moment(p.fi)
+                                console.log(i, f)
+                                var d = f.diff(i, 'seconds', true);
+
+                                temps += d;
+                            }
+
+                            t.suma = temps;
+                        }
+
+                        return res.json({
+                            error: false,
+                            data: docs
+                        })
+                    })
+            })
+    }
+
+    getTasquesAmbPeriodesSuma(req, res, next) {
+        Cb.findOne({ propietari: req.user._id })
+            .exec((err, c) => {
+                if (err) return next(boom.badImplementation(err));
+                Tk.aggregate([
+                    {
+                        $match: {
+                            cube: c._id
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'periods',
+                            localField: '_id',
+                            foreignField: 'task',
+                            as: "periodes"
+                        }
+                    }
+                ])
+                    .exec((err, docs) => {
+                        if (err) return next(boom.badImplementation(err));
+
+                        for (let t of docs) {
+                            var temps = 0;
+                            for (let p of t.periodes) {
+                                var i = moment(p.inici)
+                                var f = moment(p.fi)
+                                console.log(i, f)
+                                var d = f.diff(i, 'seconds', true);
+
+                                temps += d;
+                            }
+
+                            t.suma = temps;
+                        }
+
+                        return res.json({
+                            error: false,
+                            data: docs
+                        })
+                    })
+            })
+    }
 }
 module.exports = Controllers;
