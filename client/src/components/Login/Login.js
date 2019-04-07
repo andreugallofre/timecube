@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button } from 'antd';
+import { postGetUser } from '../utils.js'
 import './Login.css'
 
 class LoginForm extends Component {
@@ -8,6 +9,13 @@ class LoginForm extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                postGetUser(values.email, values.password).then((response) => {
+                    this.props.history.push("/home/cube");
+                }).catch((error) => {
+                    console.log(error);
+                    this.props.history.push("/");
+                    alert("Username or password incorrect");
+                });
             }
         });
     };
@@ -23,7 +31,7 @@ class LoginForm extends Component {
                         { type: 'email', message: 'The input is not valid e-mail!' },
                         { required: true, message: 'Please input your e-mail!' }],
                     })(
-                        <Input prefix={<Icon type="user"/>} placeholder="Email" />
+                        <Input prefix={<Icon type="mail" />} placeholder="Email" />
                     )}
                 </Form.Item>
                 <Form.Item>

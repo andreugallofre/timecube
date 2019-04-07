@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button } from 'antd';
-import { EmailIcon } from '../utils.js';
+import { postCreateUser } from '../utils.js'
 import './Register.css'
 
 class RegisterForm extends Component {
@@ -23,6 +23,14 @@ class RegisterForm extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                postCreateUser(values.name, values.email, values.password).then((response) => {
+                    this.props.history.push("/register/newcube");
+                }).catch((error) => {
+                    console.log(error);
+                    this.props.history.push("/register");
+                    alert("A username with this email is already registered");
+                });
+
             }
         });
     };
@@ -56,7 +64,7 @@ class RegisterForm extends Component {
                             { type: 'email', message: 'The input is not valid e-mail!' },
                             { required: true, message: 'Please input your e-mail!' }],
                     })(
-                        <Input prefix={<EmailIcon/>} placeholder="Email" />
+                        <Input prefix={<Icon type="mail" />} placeholder="Email" />
                     )}
                 </Form.Item>
                 <Form.Item hasFeedback >
