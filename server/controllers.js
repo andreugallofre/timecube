@@ -266,32 +266,32 @@ class Controllers {
                 //ACABAR
                 let id_task_ant = _.find(cube.cares, { 'num': anterior }).task;
                 P.findOne({ task: id_task_ant, acabada: false }, (err,doc) => {
-                if (doc) {
-                    doc.acabada = true;
-                    doc.fi = Date.now();
-                }
-                else return  next(boom.badRequest("No hi ha periode anterior"))
-                doc.save(err => {
-                    if (err) return next(boom.badImplementation(err));
-                    //NOVA
-                    if(actual == 0) {
-                        return res.json({ data: true });
-                    } else {
-                        let id_task_act = _.find(cube.cares, { 'num': actual }).task;
-                        var p = new P({
-                        "inici": Date.now(),
-                        "acabada": false,
-                        "task": id_task_act
-                        });
-                        p.save(err => {
-                            if (err) return next(boom.badImplementation(err));
-                            return res.json({
-                                data: true,
-                                error: ""
-                            })
-                        });
-                    }
-                });
+                  if (doc) {
+                      doc.acabada = true;
+                      doc.fi = Date.now();
+                  }
+                  else return  next(boom.badRequest("No hi ha periode anterior"))
+                  doc.save(err => {
+                      if (err) return next(boom.badImplementation(err));
+                      //NOVA
+                      if(actual == 0) {
+                          return res.json({ data: true });
+                      } else {
+                          let id_task_act = _.find(cube.cares, { 'num': actual }).task;
+                          var p = new P({
+                          "inici": Date.now(),
+                          "acabada": false,
+                          "task": id_task_act
+                          });
+                          p.save(err => {
+                              if (err) return next(boom.badImplementation(err));
+                              return res.json({
+                                  data: true,
+                                  error: ""
+                              })
+                          });
+                      }
+                  });
                 });
             }
           });
