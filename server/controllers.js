@@ -170,6 +170,66 @@ class Controllers {
             })
     }
 
+    getTasquesActivesAmbPeriodes(req, res, next) {
+        Cb.findOne({ propietari: req.user._id })
+        .exec((err, c) => {
+            if (err) return next(boom.badImplementation(err));
+            var ids = _.map(c.cares, "task");
+
+            Tk.aggregate([
+                {
+                    $match: {
+                        _id: {$in: ids}
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'periodes',
+                        localField: '_id',
+                        foreignField: 'task',
+                        as: "periodes"
+                    }
+                }
+            ])
+            .exec((err, docs) => {
+                if (err) return next(boom.badImplementation(err));
+                return res.json({
+                    error: false,
+                    data: docs
+                })
+            })
+        })
+    }
+
+    getTasquesAmbPeriodes(req, res, next) {
+        Cb.findOne({ propietari: req.user._id })
+            .exec((err, c) => {
+                if (err) return next(boom.badImplementation(err));
+                Tk.aggregate([
+                    {
+                        $match: {
+                            cube: c._id
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'periodes',
+                            localField: '_id',
+                            foreignField: 'task',
+                            as: "periodes"
+                        }
+                    }
+                ])
+                    .exec((err, docs) => {
+                        if (err) return next(boom.badImplementation(err));
+                        return res.json({
+                            error: false,
+                            data: docs
+                        })
+                    })
+            })
+    }
+
 
 }
 module.exports = Controllers;
