@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Icon, Table } from 'antd';
-import { CubeIcon, getAllTasks } from '../../utils.js';
-import './MainPage.css';
+import { Layout, Table } from 'antd';
+import { getAllTasks } from '../../utils.js';
+import './Tasks.css';
 
-const { Sider, Content } = Layout;
+const { Content } = Layout;
 
 let dataSource = [{ }];
 
@@ -23,14 +23,6 @@ const columns = [{
 
 
 export class Tasks extends Component {
-
-    myCubeScreen = () => {
-        this.props.history.push("/home/cube");
-    };
-
-    periodCharts = () => {
-        this.props.history.push("/home/charts");
-    };
 
     componentDidMount() {
         this.getData();
