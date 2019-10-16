@@ -21,7 +21,7 @@ const columns = [{
     key: 'endTime',
 }];
 
-class MainPage_Charts extends Component {
+export class Periods extends Component {
 
     myCubeScreen = () => {
         this.props.history.push("/home/cube");
@@ -67,35 +67,10 @@ class MainPage_Charts extends Component {
 
     render() {
         return (
-            <Layout>
-                <Sider className="sider" >
-                    <div className="logo" />
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['3']}>
-                        <Menu.Item key="1" onClick={this.myCubeScreen} >
-                            <CubeIcon />
-                            <span> My Cube </span>
-                        </Menu.Item>
-                        <Menu.Item key="2" onClick={this.myTasksScreen}>
-                            <Icon type="bars" />
-                            <span> All my Tasks </span>
-                        </Menu.Item>
-                        <Menu.Item key="3">
-                            <Icon type="clock-circle" />
-                            <span> All my periods </span>
-                        </Menu.Item>
-                    </Menu>
-                </Sider>
-
-                <Layout style={{ marginLeft: 200 }}>
-                    <Content className="content">
-                        <h1 className="content-title">All your tasks details</h1>
-                        <Table dataSource={dataSource} columns={columns} />
-                    </Content>
-                </Layout>
-
-            </Layout>
+            <Content className="content">
+                <h1 className="content-title">All your tasks details</h1>
+                <Table dataSource={dataSource} columns={columns} />
+            </Content>
         );
     }
 }
-
-export default MainPage_Charts;

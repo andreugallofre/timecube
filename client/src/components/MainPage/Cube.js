@@ -64,11 +64,9 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
     }
 );
 
-class MainPage_MyCube extends Component {
+export class Cube extends Component {
 
-    state = {
-        visible: false,
-    };
+    state = { visible: false };
 
     showModal = () => {
         this.setState({ visible: true });
@@ -102,14 +100,6 @@ class MainPage_MyCube extends Component {
 
     saveFormRef = (formRef) => {
         this.formRef = formRef;
-    };
-
-    myTasksScreen = () => {
-        this.props.history.push("/home/tasks");
-    };
-
-    periodCharts = () => {
-        this.props.history.push("/home/charts");
     };
 
     cubeConfiguration = () => {
@@ -149,57 +139,31 @@ class MainPage_MyCube extends Component {
         const { list } = this.state;
 
         return (
-            <Layout>
-                <Sider className="sider" >
-                    <div className="logo" />
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                        <Menu.Item key="1">
-                            <CubeIcon />
-                            <span> My Cube </span>
-                        </Menu.Item>
-                        <Menu.Item key="2" onClick={this.myTasksScreen}>
-                            <Icon type="bars" />
-                            <span> All my Tasks </span>
-                        </Menu.Item>
-                        <Menu.Item key="3" onClick={this.periodCharts}>
-                            <Icon type="clock-circle" />
-                            <span> All my periods </span>
-                        </Menu.Item>
-                    </Menu>
-                </Sider>
-
-                <Layout style={{ marginLeft: 200 }}>
-
-                    <Content className="content">
-                        <div className="configureButton">
-                            <Button type="primary" onClick={this.cubeConfiguration}>Configure all faces</Button>
-                            <Button type="default" onClick={this.showModal} style={{marginLeft: 5}}>Configure one face</Button>
-                        </div>
-                        <h1 className="content-title">Your cube configuration</h1>
-                        <List
-                            className="demo-loadmore-list"
-                            itemLayout="horizontal"
-                            dataSource={list}
-                            renderItem={item => (
-                                <List.Item actions={[<Button onClick={this.showModal}>Change Task</Button>]}>
-                                    <List.Item.Meta
-                                        title={<a href="https://ant.design">{item.name.last}</a>}
-                                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                                    />
-                                </List.Item>
-                            )}
-                        />
-                        <CollectionCreateForm
-                            wrappedComponentRef={this.saveFormRef}
-                            visible={this.state.visible}
-                            onCancel={this.handleCancel}
-                            onCreate={this.handleCreate}
-                        />
-                    </Content>
-                </Layout>
-            </Layout>
+            <Content className="content">
+                <div className="configureButton">
+                    <Button type="primary" onClick={this.cubeConfiguration}>Configure all faces</Button>
+                    <Button type="default" onClick={this.showModal} style={{marginLeft: 5}}>Configure one face</Button>
+                </div>
+                <h1 className="content-title">Your cube configuration</h1>
+                <List
+                    className="demo-loadmore-list"
+                    itemLayout="horizontal"
+                    dataSource={list}
+                    renderItem={item => (
+                        <List.Item actions={[<Button onClick={this.showModal}>Change Task</Button>]}>
+                            <List.Item.Meta
+                                title={item.name.last}
+                            />
+                        </List.Item>
+                    )}
+                />
+                <CollectionCreateForm
+                    wrappedComponentRef={this.saveFormRef}
+                    visible={this.state.visible}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                />
+            </Content>
         );
     }
 }
-
-export default MainPage_MyCube;
