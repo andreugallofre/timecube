@@ -1,26 +1,12 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Icon, List, Modal, Button, Input, Form, InputNumber } from 'antd';
-import {CubeIcon, putEditCubeFace, getActiveTasks, getAllPeriodes} from "../utils";
+import { Layout, List, Modal, Button, Input, Form, InputNumber } from 'antd';
+import { putEditCubeFace, getActiveTasks } from '../../utils.js';
 
 import './MainPage.css';
 
-const { Sider, Content } = Layout;
+const { Content } = Layout;
 
 let dataSource = [{}];
-
-const columns = [{
-    title: 'Face number',
-    dataIndex: 'faceNumber',
-    key: 'faceNumber',
-}, {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-}, {
-    title: 'Description',
-    dataIndex: 'description',
-    key: 'description',
-}];
 
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
     class extends React.Component {

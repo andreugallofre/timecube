@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { CubeIcon } from "../utils";
 import './MainPage.css';
-import { Cube } from './Cube.js'
-import { Tasks } from './Tasks.js'
-import { Periods } from './Periods.js'
+import { Cube } from './Cube/Cube.js'
+import { Tasks } from './Tasks/Tasks.js'
+import { Periods } from './Periods/Periods.js'
 
 const { Sider } = Layout;
 

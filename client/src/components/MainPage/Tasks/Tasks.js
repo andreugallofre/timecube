@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon, Table } from 'antd';
-import { CubeIcon, getAllTasks } from "../utils";
+import { CubeIcon, getAllTasks } from '../../utils.js';
 import './MainPage.css';
 
 const { Sider, Content } = Layout;
