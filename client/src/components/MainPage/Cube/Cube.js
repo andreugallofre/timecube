@@ -1,54 +1,13 @@
 import React, { Component } from 'react';
-import { Layout, List, Modal, Button, Input, Form, InputNumber } from 'antd';
+import { Layout, List, Button } from 'antd';
 import { putEditCubeFace, getActiveTasks } from '../../utils.js';
+import { CollectionCreateForm } from '../../Forms/CollectionCreator.js'
 
-import './MainPage.css';
+import './Cube.css';
 
 const { Content } = Layout;
 
 let dataSource = [{}];
-
-const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
-    class extends React.Component {
-        render() {
-            const { visible, onCancel, onCreate, form } = this.props;
-            const { getFieldDecorator } = form;
-            return (
-                <Modal
-                    visible={visible}
-                    title="Create a new collection"
-                    okText="Create"
-                    onCancel={onCancel}
-                    onOk={onCreate} >
-                    <Form layout="vertical">
-                        <Form.Item label="Face Number (1 to 5)">
-                            {getFieldDecorator('id', {
-                                rules: [{ required: true, message: 'Please select a face number' }],
-                                initialValue: 1
-                            })(
-                                <InputNumber min={1} max={5} />
-                            )}
-                        </Form.Item>
-                        <Form.Item label="Title">
-                            {getFieldDecorator('title', {
-                                rules: [{ required: true, message: 'Please input the title of the task!' }],
-                            })(
-                                <Input />
-                            )}
-                        </Form.Item>
-                        <Form.Item label="Description">
-                            {getFieldDecorator('description', {
-                                rules: [{ required: true, message: 'Please input the description for the task!' }],
-                            })(
-                                <Input />
-                            )}
-                        </Form.Item>
-                    </Form>
-                </Modal>
-            );
-        }
-    }
-);
 
 export class Cube extends Component {
 
@@ -73,7 +32,7 @@ export class Cube extends Component {
             putEditCubeFace(values.id, values.title, values.description).then((response) => {
                 form.resetFields();
                 this.setState({ visible: false });
-                this.props.history.push("/home/cube");
+                this.props.history.push("/home");
             }).catch((error) => {
                 console.log(error);
                 alert("Incorrect data");
